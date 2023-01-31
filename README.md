@@ -26,7 +26,11 @@ tox
 - then commit everything on github
 - then add new workflow for python package
 - ![](./Assets/img1.png)
-- - ![](./Assets/img2.png)
+- ![](./Assets/img2.png)
+
+- Now add secrets to your github and change the ```python publish.yml``` file according to your needs. To acchieve this get API from python-pypi site
+
+
 
 Tracking the desktop applications in real time and time spent on each application and saving the data in json format.
 
