@@ -30,6 +30,9 @@ tox
 
 - Now add secrets to your github and change the ```python publish.yml``` file according to your needs. To acchieve this get API from python-pypi site
 
+- then after each & everything ready then do this steps:
+- - ![](./Assets/img3.png)
+
 
 
 Tracking the desktop applications in real time and time spent on each application and saving the data in json format.
