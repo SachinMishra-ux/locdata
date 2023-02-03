@@ -1,21 +1,19 @@
 from __future__ import print_function
 import time
 from os import system
-from locdata.activity import *
-from ensure import ensure_annotations
 import json
 import datetime
 import sys
-if sys.platform in ['Windows', 'win32', 'cygwin']:
+from locdata.activity import *
+
+if sys.platform in ["Windows", "win32", "cygwin"]:
     import win32gui
     import uiautomation as auto
-elif sys.platform in ['Mac', 'darwin', 'os2', 'os2emx']:
+elif sys.platform in ["Mac", "darwin", "os2", "os2emx"]:
     from AppKit import NSWorkspace
     from Foundation import *
-elif sys.platform in ['linux', 'linux2']:
-        import linux as l
-
-
+elif sys.platform in ["linux", "linux2"]:
+    import linux as l
 
 
 activeList = AcitivyList([])
@@ -23,71 +21,71 @@ activeList = AcitivyList([])
 try:
     activeList.initialize_me()
 except Exception:
-    print('No json')
+    print("No json")
+
 
 def url_to_name(url):
-    string_list = url.split('/')
+    string_list = url.split("/")
     return string_list[2]
 
 
 def get_active_window():
     _active_window_name = None
-    if sys.platform in ['Windows', 'win32', 'cygwin']:
+    if sys.platform in ["Windows", "win32", "cygwin"]:
         window = win32gui.GetForegroundWindow()
         _active_window_name = win32gui.GetWindowText(window)
-    elif sys.platform in ['Mac', 'darwin', 'os2', 'os2emx']:
-        _active_window_name = (NSWorkspace.sharedWorkspace()
-                               .activeApplication()['NSApplicationName'])
+    elif sys.platform in ["Mac", "darwin", "os2", "os2emx"]:
+        _active_window_name = NSWorkspace.sharedWorkspace().activeApplication()[
+            "NSApplicationName"
+        ]
     else:
-        print("sys.platform={platform} is not supported."
-              .format(platform=sys.platform))
+        print("sys.platform={platform} is not supported.".format(platform=sys.platform))
         print(sys.version)
     return _active_window_name
 
 
 def get_chrome_url():
     _active_window_name = None
-    if sys.platform in ['Windows', 'win32', 'cygwin']:
+    if sys.platform in ["Windows", "win32", "cygwin"]:
         window = win32gui.GetForegroundWindow()
         chromeControl = auto.ControlFromHandle(window)
         edit = chromeControl.EditControl()
-        return 'https://' + edit.GetValuePattern().Value
-    elif sys.platform in ['Mac', 'darwin', 'os2', 'os2emx']:
-        textOfMyScript = """tell app "google chrome" to get the url of the active tab of window 1"""
-        s = NSAppleScript.initWithSource_(
-            NSAppleScript.alloc(), textOfMyScript)
+        return "https://" + edit.GetValuePattern().Value
+    elif sys.platform in ["Mac", "darwin", "os2", "os2emx"]:
+        textOfMyScript = (
+            """tell app "google chrome" to get the url of the active tab of window 1"""
+        )
+        s = NSAppleScript.initWithSource_(NSAppleScript.alloc(), textOfMyScript)
         results, err = s.executeAndReturnError_(None)
         return results.stringValue()
     else:
-        print("sys.platform={platform} is not supported."
-              .format(platform=sys.platform))
+        print("sys.platform={platform} is not supported.".format(platform=sys.platform))
         print(sys.version)
     return _active_window_name
 
-def f1():
+
+def start():
     global active_window_name
-    active_window_name =''
-    
+    active_window_name = ""
+
     global first_time
     first_time = True
-    
+
     global start_time
-    start_time=datetime.datetime.now()
+    start_time = datetime.datetime.now()
     global activity_name
     activity_name = ""
-    
+
     try:
         while True:
-            previous_site = ""
-            if sys.platform not in ['linux', 'linux2']:
+            if sys.platform not in ["linux", "linux2"]:
                 new_window_name = get_active_window()
-                if 'Google Chrome' in new_window_name:
+                if "Google Chrome" in new_window_name:
                     new_window_name = url_to_name(get_chrome_url())
-            if sys.platform in ['linux', 'linux2']:
+            if sys.platform in ["linux", "linux2"]:
                 new_window_name = l.get_active_window_x()
-                if 'Google Chrome' in new_window_name:
+                if "Google Chrome" in new_window_name:
                     new_window_name = l.get_chrome_url_x()
-
 
             if active_window_name != new_window_name:
                 print(active_window_name)
@@ -107,9 +105,10 @@ def f1():
                     if not exists:
                         activity = Activity(activity_name, [time_entry])
                         activeList.activities.append(activity)
-                    with open('activities.json', 'w') as json_file:
-                        json.dump(activeList.serialize(), json_file,
-                                indent=4, sort_keys=True)
+                    with open("activities.json", "w") as json_file:
+                        json.dump(
+                            activeList.serialize(), json_file, indent=4, sort_keys=True
+                        )
                         start_time = datetime.datetime.now()
                 first_time = False
                 active_window_name = new_window_name
@@ -117,6 +116,5 @@ def f1():
             time.sleep(1)
 
     except KeyboardInterrupt:
-        with open('activities.json', 'w') as json_file:
+        with open("activities.json", "w") as json_file:
             json.dump(activeList.serialize(), json_file, indent=4, sort_keys=True)
-f1()
