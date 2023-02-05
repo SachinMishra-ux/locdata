@@ -9,5 +9,6 @@ tox==3.25.1
 black==22.8.0
 flake8==5.0.4
 mypy==0.971
+types-python-dateutil
 stubs
 -e .
