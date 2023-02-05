@@ -1,19 +1,18 @@
 from __future__ import print_function
 import time
-from os import system
 import json
 import datetime
 import sys
-from locdata.activity import *
+from locdata.activity import AcitivyList, TimeEntry, Activity
 
 if sys.platform in ["Windows", "win32", "cygwin"]:
     import win32gui
     import uiautomation as auto
 elif sys.platform in ["Mac", "darwin", "os2", "os2emx"]:
     from AppKit import NSWorkspace
-    from Foundation import *
+    from Foundation import NSAppleScript
 elif sys.platform in ["linux", "linux2"]:
-    import linux as l
+    print("Linux system detected")
 
 
 activeList = AcitivyList([])
@@ -83,9 +82,7 @@ def start():
                 if "Google Chrome" in new_window_name:
                     new_window_name = url_to_name(get_chrome_url())
             if sys.platform in ["linux", "linux2"]:
-                new_window_name = l.get_active_window_x()
-                if "Google Chrome" in new_window_name:
-                    new_window_name = l.get_chrome_url_x()
+                break
 
             if active_window_name != new_window_name:
                 print(active_window_name)

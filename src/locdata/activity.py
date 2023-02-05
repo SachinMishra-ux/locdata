@@ -5,13 +5,13 @@ from dateutil import parser
 class AcitivyList:
     def __init__(self, activities):
         self.activities = activities
-    
+
     def initialize_me(self):
         activity_list = AcitivyList([])
         with open('activities.json', 'r') as f:
             data = json.load(f)
-            activity_list = AcitivyList(
-                activities = self.get_activities_from_json(data)
+            activity_list =AcitivyList(
+                activities =self.get_activities_from_json(data)
             )
         return activity_list
     
@@ -45,7 +45,7 @@ class AcitivyList:
     
     def serialize(self):
         return {
-            'activities' : self.activities_to_json()
+            'activities': self.activities_to_json()
         }
     
     def activities_to_json(self):
@@ -92,10 +92,10 @@ class TimeEntry:
 
     def serialize(self):
         return {
-            'start_time' : self.start_time.strftime("%Y-%m-%d %H:%M:%S"),
-            'end_time' : self.end_time.strftime("%Y-%m-%d %H:%M:%S"),
-            'days' : self.days,
-            'hours' : self.hours,
+            'start_time': self.start_time.strftime("%Y-%m-%d %H:%M:%S"),
+            'end_time': self.end_time.strftime("%Y-%m-%d %H:%M:%S"),
+            'days': self.days,
+            'hours': self.hours,
             'minutes' : self.minutes,
             'seconds' : self.seconds
         }

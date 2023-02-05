@@ -21,7 +21,7 @@ mypy src/  - for checking any issues in your python code.
 pytest -v   - for any unit test
 ```
 ```
-tox
+tox - for final running
 ```
 - then commit everything on github
 - then add new workflow for python package
