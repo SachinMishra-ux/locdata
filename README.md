@@ -1,6 +1,7 @@
 # Time Trcaker Python Package on any platform.
 ## First use my template repo to create this repo.
 - template repo = https://github.com/SachinMishra-ux/pypi_template
+- Peacefully do the changes with respect to your package name in all the files.
 
 ```
 python template.py
