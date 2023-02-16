@@ -130,3 +130,6 @@ dmypy.json
 
 # ignore log files
 *.log
+
+# ignore activites file
+activities.json
