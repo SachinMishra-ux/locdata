@@ -7,6 +7,7 @@ class AcitivyList:
         self.activities = activities
 
     def initialize_me(self):
+        print("Started!")
         activity_list = AcitivyList([])
         with open('activities.json', 'r') as f:
             data = json.load(f)
