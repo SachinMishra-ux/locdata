@@ -1,4 +1,9 @@
-class InvalidNumberException(Exception):
-    def __init__(self, message: str = "Invalid Number passed"):
+class InvalidOSException(Exception):
+    def __init__(self, message: str = "Either Linux or MAC system found!"):
+        self.message = message
+        super().__init__(self.message)
+
+class InvalidpathException(Exception):
+    def __init__(self, message: str = "filepath is invalid"):
         self.message = message
         super().__init__(self.message)

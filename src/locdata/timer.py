@@ -3,19 +3,18 @@ import time
 import json
 import datetime
 import sys
+import win32gui
+import uiautomation as auto
+from locdata import linux
 from locdata.activity import AcitivyList, TimeEntry, Activity
-
-if sys.platform in ["Windows", "win32", "cygwin"]:
-    import win32gui
-    import uiautomation as auto
-elif sys.platform in ["Mac", "darwin", "os2", "os2emx"]:
-    from AppKit import NSWorkspace
-    from Foundation import NSAppleScript
-elif sys.platform in ["linux", "linux2"]:
-    print("Linux system detected")
-
-
+from locdata.custom_exception import InvalidOSException
 activeList = AcitivyList([])
+
+try:
+    if sys.platform in ["Mac", "darwin", "os2", "os2emx"]:
+        raise InvalidOSException
+except InvalidOSException:
+    print("This package is not build for MACOS.\nIf you want to use it for macos you can use locadataMAC ")
 
 try:
     activeList.initialize_me()
@@ -33,10 +32,6 @@ def get_active_window():
     if sys.platform in ["Windows", "win32", "cygwin"]:
         window = win32gui.GetForegroundWindow()
         _active_window_name = win32gui.GetWindowText(window)
-    elif sys.platform in ["Mac", "darwin", "os2", "os2emx"]:
-        _active_window_name = NSWorkspace.sharedWorkspace().activeApplication()[
-            "NSApplicationName"
-        ]
     else:
         print("sys.platform={platform} is not supported.".format(platform=sys.platform))
         print(sys.version)
@@ -50,13 +45,6 @@ def get_chrome_url():
         chromeControl = auto.ControlFromHandle(window)
         edit = chromeControl.EditControl()
         return "https://" + edit.GetValuePattern().Value
-    elif sys.platform in ["Mac", "darwin", "os2", "os2emx"]:
-        textOfMyScript = (
-            """tell app "google chrome" to get the url of the active tab of window 1"""
-        )
-        s = NSAppleScript.initWithSource_(NSAppleScript.alloc(), textOfMyScript)
-        results, err = s.executeAndReturnError_(None)
-        return results.stringValue()
     else:
         print("sys.platform={platform} is not supported.".format(platform=sys.platform))
         print(sys.version)
@@ -115,5 +103,3 @@ def start():
     except KeyboardInterrupt:
         with open("activities.json", "w") as json_file:
             json.dump(activeList.serialize(), json_file, indent=4, sort_keys=True)
-
-start()
