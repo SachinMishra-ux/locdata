@@ -22,12 +22,6 @@ try:
 except Exception:
     print("No json")
 
-
-def url_to_name(url):
-    string_list = url.split("/")
-    return string_list[2]
-
-
 def get_active_window():
     _active_window_name = None
     if sys.platform in ["Windows", "win32", "cygwin"]:
@@ -45,7 +39,8 @@ def get_chrome_url():
         window = win32gui.GetForegroundWindow()
         chromeControl = auto.ControlFromHandle(window)
         edit = chromeControl.EditControl()
-        return "https://" + edit.GetValuePattern().Value
+        web = edit.GetValuePattern().Value
+        return web.split('/')[0]
     else:
         print("sys.platform={platform} is not supported.".format(platform=sys.platform))
         print(sys.version)
@@ -61,6 +56,7 @@ def start():
 
     global start_time
     start_time = datetime.datetime.now()
+
     global activity_name
     activity_name = ""
 
@@ -69,9 +65,7 @@ def start():
             if sys.platform not in ["linux", "linux2"]:
                 new_window_name = get_active_window()
                 if "Google Chrome" in new_window_name:
-                    new_window_name = url_to_name(get_chrome_url())
-            if sys.platform in ["linux", "linux2"]:
-                break
+                    new_window_name = get_chrome_url()
 
             if active_window_name != new_window_name:
                 print(active_window_name)
@@ -104,3 +98,5 @@ def start():
     except KeyboardInterrupt:
         with open("activities.json", "w") as json_file:
             json.dump(activeList.serialize(), json_file, indent=4, sort_keys=True)
+
+start()
