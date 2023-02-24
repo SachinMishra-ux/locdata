@@ -13,8 +13,10 @@ activeList = AcitivyList([])
 try:
     if sys.platform in ["Mac", "darwin", "os2", "os2emx"]:
         raise InvalidOSException
+    elif sys.platform in ["linux", "linux2"]:
+        raise InvalidOSException
 except InvalidOSException:
-    print("This package is not build for MACOS.\nIf you want to use it for macos you can use locadataMAC ")
+    print("This package is not build for MACOS or Linux.\nIf you want to use it for macos you can use locadataMAC ")
 
 try:
     activeList.initialize_me()
