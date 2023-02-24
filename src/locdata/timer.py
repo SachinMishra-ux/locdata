@@ -5,7 +5,6 @@ import datetime
 import sys
 import win32gui
 import uiautomation as auto
-from locdata import linux
 from locdata.activity import AcitivyList, TimeEntry, Activity
 from locdata.custom_exception import InvalidOSException
 activeList = AcitivyList([])
