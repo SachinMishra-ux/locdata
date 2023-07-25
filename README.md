@@ -11,6 +11,7 @@ python template.py
 bash init_setup.sh
 ```
 ```
+0) conda create -p env python==3.9 -y
 1) conda activate ./env
 2) pip list
 ```
